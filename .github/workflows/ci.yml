@@ -1,0 +1,49 @@
+name: Validate npm installer
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  installation:
+    name: ${{ matrix.os }} / ${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            arch: x64
+          - os: ubuntu-24.04-arm
+            arch: arm64
+          - os: macos-15-intel
+            arch: x64
+          - os: macos-15
+            arch: arm64
+          - os: windows-2025
+            arch: x64
+          - os: windows-11-arm
+            arch: arm64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          architecture: ${{ matrix.arch }}
+          cache: npm
+      - name: Confirm native architecture
+        run: node -e "if (process.arch !== '${{ matrix.arch }}') process.exit(1)"
+      - name: Install JavaScript dependencies
+        run: npm ci --ignore-scripts
+      - name: Unit tests
+        run: npm test
+      - name: Install official release in isolated npm prefix
+        run: npm run test:install
+      - name: Inspect package contents
+        run: npm pack --dry-run

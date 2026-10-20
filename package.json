@@ -1,0 +1,41 @@
+{
+  "name": "@gox-lang/cli",
+  "version": "0.1.3",
+  "description": "Install and run the official GOX binary from GitHub Releases.",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "gox": "bin/gox.cjs"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "README.md",
+    "LICENSE",
+    "CONTRIBUTING.md",
+    "SECURITY.md"
+  ],
+  "scripts": {
+    "postinstall": "node lib/install.cjs",
+    "test": "node --test tests/*.test.cjs",
+    "test:install": "node tests/smoke-install.cjs"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "adm-zip": "0.6.1",
+    "tar": "7.5.22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gox-lang/npm.git"
+  },
+  "homepage": "https://gox-lang.dev",
+  "bugs": {
+    "url": "https://github.com/gox-lang/npm/issues"
+  }
+}
