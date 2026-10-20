@@ -4,12 +4,9 @@ One JavaScript package installs the official GOX executable from **GitHub Releas
 No native binaries are committed to this repository or included in the npm package.
 No Python, Go compiler, curl, tar or unzip command is needed by this installer.
 
-This package is not yet published. The npm scope must be confirmed before publication;
-`private: true` currently prevents accidental publishing.
-
 ## Installation
 
-Node.js 20 or newer is required. Once published:
+Node.js 20 or newer is required.
 
 ```sh
 npm install -g @gox-lang/cli --ignore-scripts=false --foreground-scripts
@@ -84,8 +81,8 @@ No developer installation or shell configuration is changed.
 - `package-lock.json`: locked development dependency tree.
 
 The package version pins the corresponding GOX release, not a moving latest download.
-Before publication, test each supported OS natively, confirm npm scope ownership,
-remove `private: true`, and inspect the tarball. No publication is automated here.
+Before each publication, run the cross-platform CI checks and inspect the tarball.
+Publication requires maintainer access to the npm organization and is not automated here.
 
 ## Contributing
 
