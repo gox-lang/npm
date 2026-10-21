@@ -68,7 +68,20 @@ jobs:
         env:
           VERSION: ${{ steps.release.outputs.version }}
         run: |
-          npm install --global --prefix "$RUNNER_TEMP/gox-npm-check" "@gox-lang/cli@$VERSION" --ignore-scripts=false --foreground-scripts
+          # Registry metadata may lag behind a successful publish.
+          visible=false
+          for attempt in {1..12}; do
+            if [[ "$(npm view "@gox-lang/cli@$VERSION" version --prefer-online)" == "$VERSION" ]]; then
+              visible=true
+              break
+            fi
+            sleep 10
+          done
+          if [[ "$visible" != true ]]; then
+            echo 'Published version did not become visible in the registry.' >&2
+            exit 1
+          fi
+          npm install --global --prefix "$RUNNER_TEMP/gox-npm-check" "@gox-lang/cli@$VERSION" --ignore-scripts=false --foreground-scripts --prefer-online
           "$RUNNER_TEMP/gox-npm-check/bin/gox" version | grep -F "GOX Server v$VERSION"
       - name: Record published version
         env:
