@@ -5,6 +5,11 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        default: ''
 
 permissions:
   contents: read
@@ -37,6 +42,16 @@ jobs:
           node-version: '22'
           architecture: ${{ matrix.arch }}
           cache: npm
+      - id: release
+        if: inputs.version != ''
+        uses: gox-lang/server/.github/actions/release-info@main
+        with:
+          version: ${{ inputs.version }}
+      - name: Prepare candidate version
+        if: inputs.version != ''
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
+        run: npm version "$VERSION" --no-git-tag-version --ignore-scripts --allow-same-version
       - name: Confirm native architecture
         run: node -e "if (process.arch !== '${{ matrix.arch }}') process.exit(1)"
       - name: Install JavaScript dependencies

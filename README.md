@@ -97,3 +97,19 @@ See [SECURITY.md](SECURITY.md) for the reporting process.
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+## Automated releases
+
+The server distribution workflow invokes **Publish npm release** in this
+repository. It tests the requested stable GOX version on six native platforms
+before publishing the matching npm version and recording it in the source.
+Existing published versions cannot be overwritten.
+
+Configure the package's npm trusted publisher once: GitHub organization
+`gox-lang`, repository `npm`, workflow `release.yml`, environment
+`npm-publishing`. The workflow uses OIDC with npm 11.6.2 on Node 24; it does not
+require a stored npm token. Restrict the environment to main.
+
+To retry a failed channel, run the server distribution workflow for npm, or run
+this repository's release workflow from main. Leave version empty for the latest
+stable server release. A registry failure is never treated as a missing package.

@@ -4,10 +4,11 @@ const { createHash } = require('node:crypto');
 const { spawnSync } = require('node:child_process');
 const { target, verify, extract } = require('../lib/install.cjs');
 const AdmZip = require('adm-zip');
+const { version } = require('../package.json');
 
 test('platform assets are pinned to official releases', () => {
-  assert.equal(target('linux', 'x64').archive, 'gox_0.1.3_linux_amd64.tar.gz');
-  assert.equal(target('win32', 'arm64').archive, 'gox_0.1.3_windows_arm64.zip');
+  assert.equal(target('linux', 'x64').archive, 'gox_' + version + '_linux_amd64.tar.gz');
+  assert.equal(target('win32', 'arm64').archive, 'gox_' + version + '_windows_arm64.zip');
   assert.throws(() => target('linux', 'ia32'));
 });
 test('checksums reject corruption, missing and duplicate entries', () => {
