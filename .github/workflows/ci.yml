@@ -48,6 +48,7 @@ jobs:
         with:
           version: ${{ inputs.version }}
       - name: Prepare candidate version
+        shell: bash
         if: inputs.version != ''
         env:
           VERSION: ${{ steps.release.outputs.version }}
