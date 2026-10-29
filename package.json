@@ -1,6 +1,6 @@
 {
   "name": "@gox-lang/cli",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Install and run the official GOX binary from GitHub Releases.",
   "license": "MIT",
   "engines": {
